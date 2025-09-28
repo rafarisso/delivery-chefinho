@@ -1,0 +1,21 @@
+# Environment
+.env
+backend/.env
+frontend/.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+dist/
+build/
+
+# Coverage / cache
+.coverage
+pytest_cache/
+
+# OS
+.DS_Store

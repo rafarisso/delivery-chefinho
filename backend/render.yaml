@@ -1,0 +1,39 @@
+﻿services:
+  api:
+    type: web
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://softwarecustosedespesas.netlify.app,http://localhost:5173
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: TZ
+        value: America/Sao_Paulo
+      - key: SUPABASE_BUCKET
+        value: receipts
+  weekly-reminder:
+    type: cron
+    env: python
+    schedule: "0 12 * * WED"
+    plan: free
+    buildCommand: ""
+    startCommand: ""
+    command: |
+      curl -s -X POST "$API_URL/payouts/remind_week_close" \
+        -H "Authorization: Bearer $ADMIN_TOKEN"
+    envVars:
+      - key: API_URL
+        value: https://SUA_API_PUBLICA/api
+      - key: ADMIN_TOKEN
+        sync: false
